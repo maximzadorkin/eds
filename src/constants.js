@@ -1,7 +1,12 @@
 // report
-export const GRAPH = 'График'
+export const CHART = 'График'
 export const COMP_TABLE = 'Таблица сравнений'
 export const ORDERS_TABLE = 'Таблица заявок'
+export const CHART_TYPES = {
+    DYNAMIC: 'Динамика',
+    FOR_PERIOD: 'Классификаторы за период',
+    COMPANIES: 'Компании по классификаторам'
+}
 
 // layers
 export const START = 'START'

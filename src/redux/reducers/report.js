@@ -1,26 +1,44 @@
 import _ from 'lodash'
-import { GET_REPORT } from '../actions/actionTypes.js'
+import { CHART, CHART_TYPES, COMP_TABLE, ORDERS_TABLE } from '../../constants.js'
+import {
+    CHANGE_REPORT_LAYER_STATUS,
+    SET_REPORT,
+    SET_REPORT_CHART_TYPE,
+    SET_REPORT_VIEW
+} from '../actions/actionTypes.js'
+import db from '../../db.json'
 
 const initialState = {
     comp_table: [],
     orders_table: [],
-    graph: [],
+    chart: [],
     layers: [],
-    types: ['Динамика', 'Классификаторы за период', 'Компании по классификаторам'],
-    activeType: 0
+    chartTypes: [CHART_TYPES.DYNAMIC, CHART_TYPES.FOR_PERIOD, CHART_TYPES.COMPANIES],
+    chartType: CHART_TYPES.DYNAMIC,
+    views: [CHART, COMP_TABLE, ORDERS_TABLE],
+    view: CHART
 }
 
 const reducer = (state = initialState, action) => {
     let newState
     const value = action.payload
     switch (action.type) {
-        case GET_REPORT:
+        case SET_REPORT:
             const comp_table = []
-            const orders_table = []
-            const graph = []
-            const layers = _.uniq(graph.map(g => ({text: g.ZLabel, checked: false})))
-            newState = {...state, layers, comp_table, orders_table, graph}
+            const orders_table = db.table.map(line =>
+                Object.keys(line).sort().map(k => line[k]))
+            const chart = []
+            const layers = _.uniq(chart.map(g => ({name: g.ZLabel, checked: false})))
+            newState = {...state, layers, comp_table, orders_table, chart}
             return newState
+        case SET_REPORT_VIEW:
+            return {...state, view: value}
+        case SET_REPORT_CHART_TYPE:
+            return {...state, chartType: value}
+        case CHANGE_REPORT_LAYER_STATUS:
+            const updatedLayers = state.layers.map(l =>
+                l.name === value ? {...l, checked: !l.checked} : l)
+            return {...state, layers: updatedLayers}
         default:
             return state
     }

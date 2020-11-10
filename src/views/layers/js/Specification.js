@@ -30,34 +30,32 @@ class Specification extends Component {
         this.setState({searchActive: false})
 
     render() {
+
+        const search = !this.state.searchActive ? null
+            : (<Search
+                title={this.props.parts[this.state.itemActive].label}
+                handler={value =>
+                    this.props.setSpecsLabelItem(this.state.itemActive, value)}
+                value={this.props.parts[this.state.itemActive].item}
+                items={this.props.searches}
+                listSize={5}
+                close={this.close}
+            />)
+
+        const labels = this.state.searchActive ? null
+            : this.props.parts.map((l,i) =>
+                <span className={css.link}
+                      onClick={() => this.open(i)}
+                      key={uniqid()} >
+                    {l.label} [{l.item}]
+                </span>)
+
         return (
             <div className={css.section}>
                 <div className={css.workSection}>
                     <div className={css.labels}>
-                        {
-                            !this.state.searchActive ? null
-                            : (
-                                <Search
-                                    title={this.props.parts[this.state.itemActive].label}
-                                    handler={value =>
-                                        this.props.setSpecsLabelItem(this.state.itemActive, value)}
-                                    value={this.props.parts[this.state.itemActive].item}
-                                    items={this.props.searches}
-                                    listSize={5}
-                                    close={this.close}
-                                />
-                            )
-                        }
-                        {
-                            this.state.searchActive ? null :
-                            this.props.parts.map((l,i) =>
-                                <span className={css.link}
-                                    onClick={() => this.open(i)}
-                                    key={uniqid()} >
-                                    {l.label} [{l.item}]
-                                </span>
-                            )
-                        }
+                        {search}
+                        {labels}
                     </div>
                     <div className={css.addBtn}>
                         <ButtonIcon
@@ -77,22 +75,16 @@ class Specification extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    const props = {
-        parts: state.specification.parts,
-        items: state.specification.items.sort(),
-        searches: state.specification.searches
-    }
-    return props
-}
+const mapStateToProps = state => ({
+    parts: state.specification.parts,
+    items: state.specification.items.sort(),
+    searches: state.specification.searches
+})
 
-const mapDispatchToProps = dispatch => {
-    const props = {
-        addItem: value => dispatch(addSpecificationItem(value)),
-        deleteItem: value => dispatch(removeSpecificationItem(value)),
-        setSpecsLabelItem: (index, item) => dispatch(setSpecsLabelItem(index, item))
-    }
-    return props
-}
+const mapDispatchToProps = dispatch => ({
+    addItem: value => dispatch(addSpecificationItem(value)),
+    deleteItem: value => dispatch(removeSpecificationItem(value)),
+    setSpecsLabelItem: (index, item) => dispatch(setSpecsLabelItem(index, item))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Specification)

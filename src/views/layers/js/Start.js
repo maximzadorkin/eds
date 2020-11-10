@@ -2,23 +2,28 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { nextLayer } from '../../../redux/actions/actions.js'
 import Button from '../../components/js/Button.js'
-import css from '../sass/Start.module.sass'
 
 const CREATE_REPORT = 'Создать отчет'
 
+const styled = {
+    div: {
+        height: 550,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+}
+
 const Start = props =>
-    <div className={css.screen}>
+    <div style={styled.div}>
         <Button
             text={CREATE_REPORT}
             onClick={props.start}
         />
     </div>
 
-function mapDispatchToProps(dispatch) {
-    const props = {
-        start: () => dispatch(nextLayer(true))
-    }
-    return props
-}
+const mapDispatchToProps = dispatch => ({
+    start: () => dispatch(nextLayer(true))
+})
 
 export default connect(null, mapDispatchToProps)(Start)

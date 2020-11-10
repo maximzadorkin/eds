@@ -43,6 +43,15 @@ const reducer = (state = initialState, action) => {
             const wasLength = rangesString.length
             const nowLength = uniqRangesString.length
             if (wasLength > nowLength) alert('Период уже есть в списке')
+            const wrongLength = state.length > 0
+                ? state.filter(d =>
+                    d.endDate - d.startDate !== truePayload.endDate - truePayload.startDate
+                ).length > 0
+                : false
+            if (wrongLength) {
+                alert('Длины периодов должны быть равны')
+                return state
+            }
             const ranges = uniqRangesString.map(parseRangeToObj)
             return ranges
         case DELETE_DATE_RANGE:

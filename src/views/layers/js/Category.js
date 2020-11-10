@@ -7,7 +7,7 @@ import css from '../sass/Category.module.sass'
 const Category = props =>
     <div className={css.section}>
         <span className={css.text}>Выбранная категория: {props.active}</span>
-        <select className={css.select} defaultValue={props.active}
+        <select className={css.select} value={props.active}
             onChange={(event) =>
             props.onChange(event.target.selectedOptions[0].value)} size={3}>
             {
@@ -17,19 +17,13 @@ const Category = props =>
         </select>
     </div>
 
-const mapStateToProps = state => {
-    const props = {
-        categories: state.specification.categories,
-        active: state.specification.category
-    }
-    return props
-}
+const mapStateToProps = state => ({
+    categories: state.specification.categories,
+    active: state.specification.category
+})
 
-const mapDispatchToProps = dispatch => {
-    const props = {
-        onChange: value => dispatch(setCategory(value))
-    }
-    return props
-}
+const mapDispatchToProps = dispatch => ({
+    onChange: value => dispatch(setCategory(value))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category)

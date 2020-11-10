@@ -3,21 +3,54 @@ import { connect } from 'react-redux'
 import { addDateRange, deleteDateRange } from '../../../redux/actions/actions.js'
 import DateRanges from '../../components/js/DateRanges.js'
 import ListWithDeleteElements from '../../components/js/ListWithDeleteElements.js'
-import css from '../sass/Dates.module.sass'
 
-const Dates = props =>
-    <div className={css.screen}>
-        <DateRanges add={props.add}/>
-        <ListWithDeleteElements
-            style={{
-                height: '440px'
-            }}
-            items={props.items}
-            deleteHandler={props.deleteRange}
-        />
-    </div>
+const warningText = 'Длины периодов должны быть равны'
 
-function mapStateToProps(state) {
+const styled = {
+    div: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        flexWrap: 'wrap'
+    },
+    warningSpan: {
+        display: 'block',
+        marginBottom: 5,
+        padding: 10,
+        backgroundColor: '#ffc600',
+        color: '#fff',
+        fontFamily: 'Roboto',
+        fontWeight: 500,
+        fontSize: 15,
+        textAlign: 'center'
+    },
+    DateRanges: {
+        fontFamily: 'Roboto, sans-serif'
+    },
+    ListWithDeleteElements: {
+        height: 440,
+        fontWeight: 300
+    }
+}
+
+const Dates = props => {
+    const warning = <span style={styled.warningSpan}>{warningText}</span>
+    return (
+        <div>
+            {props.items.length === 0 ? warning : null}
+            <div style={styled.div}>
+                <DateRanges add={props.add} style={styled.DateRanges}/>
+                <ListWithDeleteElements
+                    style={styled.ListWithDeleteElements}
+                    items={props.items}
+                    deleteHandler={props.deleteRange}
+                />
+            </div>
+        </div>
+    )
+}
+
+
+const mapStateToProps = state => {
     const datesToString = date => {
         const start = new Date(date.startDate)
         const end = new Date(date.endDate)
@@ -31,13 +64,10 @@ function mapStateToProps(state) {
     return props
 }
 
-function mapDispatchToProps(dispatch) {
-    const props = {
-        add: ranges => dispatch(addDateRange(ranges)),
-        deleteRange: range => dispatch(deleteDateRange(range))
-    }
-    return props
-}
+const mapDispatchToProps = dispatch => ({
+    add: ranges => dispatch(addDateRange(ranges)),
+    deleteRange: range => dispatch(deleteDateRange(range))
+})
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dates)

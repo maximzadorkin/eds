@@ -40,11 +40,8 @@ const QuizWrapper = props =>
         </div>
     </div>
 
-function mapStateToProps(state) {
-    const props = {
-        layer: state.navigation.active
-    }
-    return props
-}
+const mapStateToProps = state => ({
+    layer: state.navigation.active
+})
 
 export default connect(mapStateToProps)(QuizWrapper)

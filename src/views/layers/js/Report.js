@@ -1,68 +1,54 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import * as uniqid from 'uniqid'
-import { COMP_TABLE, GRAPH, ORDERS_TABLE } from '../../../constants.js'
+import { COMP_TABLE, CHART, ORDERS_TABLE } from '../../../constants.js'
+import { setReportView } from '../../../redux/actions/actions.js'
+import Table from '../../components/js/Table.js'
 import css from '../sass/Report.module.sass'
-import ReportGraph from './ReportGraph.js'
-import { GoogleCharts } from 'google-charts'
+import ReportGraph from './ReportChart.js'
 
-class Report extends Component {
-
-    state = {
-        chartTableId: '',
-        drawTable: () => {}
+const Report = props => {
+    let view
+    switch (props.view) {
+        case CHART:
+            view = <ReportGraph className={css.content}/>
+            break
+        case COMP_TABLE:
+            break
+        case ORDERS_TABLE:
+            view = <Table width='100%' height={400} items={props.orders_table}/>
+            break
+        default:
+            break
     }
 
-    componentWillMount = () => {
-        GoogleCharts.api.charts.load('current', {'packages':['table']});
-        GoogleCharts.api.charts.setOnLoadCallback(drawTable);
-        function drawTable(dataset, id) {
-            var data = new GoogleCharts.api.visualization.DataTable();
-            data.addColumn('string', 'Name');
-            data.addColumn('number', 'Salary');
-            data.addColumn('boolean', 'Full Time Employee');
-            data.addRows([
-                ['Mike',  {v: 10000, f: '$10,000'}, true],
-                ['Jim',   {v:8000,   f: '$8,000'},  false],
-                ['Bob',   {v: 7000,  f: '$7,000'},  true]
-            ]);
-            var table = new GoogleCharts.api.visualization.Table(document.getElementById(id));
-            table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
-        }
-        this.setState({chartTableId: `chart-table-${uniqid()}`, drawTable})
-    }
+    const views = props.views.map(v => (
+        <option value={v} key={uniqid()}>{v}</option>
+    ))
 
-    componentDidMount = () => {
-        this.state.drawTable(null, this.state.chartTableId)
-        window.addEventListener('resize', () => this.state.drawTable(null, this.state.chartTableId))
-    }
-
-    render() {
-        return (
-            <div>
-                <select defaultValue={GRAPH} className={css.select}>
-                    <option value={GRAPH}>{GRAPH}</option>
-                    <option value={COMP_TABLE}>{COMP_TABLE}</option>
-                    <option value={ORDERS_TABLE}>{ORDERS_TABLE}</option>
-                </select>
-                <ReportGraph className={css.content}/>
-                <div className={css.content} id={this.state.chartTableId} />
-            </div>
-        )
-    }
+    return (
+        <div>
+            <select
+                value={props.view}
+                className={css.select}
+                onChange={event => props.viewHandler(event.target.selectedOptions[0].value)}
+            >
+                {views}
+            </select>
+            {view}
+        </div>
+    )
 }
 
 
-const mapStateToProps = state => {
-    const props = {
-    }
-    return props
-}
+const mapStateToProps = state => ({
+    orders_table: state.report.orders_table,
+    views: state.report.views,
+    view: state.report.view
+})
 
-const mapDispatchToProps = dispatch => {
-    const props = {
-    }
-    return props
-}
+const mapDispatchToProps = dispatch => ({
+    viewHandler: value => dispatch(setReportView(value))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Report)

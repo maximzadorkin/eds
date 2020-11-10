@@ -1,8 +1,6 @@
 import { ApiReportTable, ApiSpecs, ApiSpecsLabels, ApiTypes } from '../Api.js'
-import {
-    getLabelsSpec, setReportTable,
-    setSpecificationSearches, setStatuses, setValueLayer
-} from './actions/actions.js'
+import { getLabelsSpec, setReport,
+    setSpecificationSearches, setStatuses, setValueLayer } from './actions/actions.js'
 import { NEXT_LAYER, SET_SPECS_LABEL_ITEM } from './actions/actionTypes.js'
 import {
     ADDRESSES,
@@ -62,8 +60,8 @@ export const navigationware = store => next => async action => {
         // const response = await fetch(ApiReportTable, {method: 'POST', body: request})
         let data = []
         // if (response.ok) data = await response.json()
-        // else console.log('Cant download table report. Error')
-        // store.dispatch(setReportTable(data))
+        // else console.log('Cant download report. Error')
+        store.dispatch(setReport(data))
         store.dispatch(setValueLayer(REPORT))
         return
     }

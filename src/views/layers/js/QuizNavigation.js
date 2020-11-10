@@ -29,21 +29,15 @@ const QuizNavigation = (props) =>
         }
     </div>
 
-const mapStateToProps = state => {
-    const props = {
-        layer: state.navigation.active
-    }
-    return props
-}
+const mapStateToProps = state => ({
+    layer: state.navigation.active
+})
 
-const mapDispatchToProps = dispatch => {
-    const props = {
-        next: () => dispatch(nextLayer()),
-        previous: () => dispatch(previousLayer()),
-        toStart: () => dispatch(setFirstLayer()),
-        downloadReport: () => dispatch(downloadReport())
-    }
-    return props
-}
+const mapDispatchToProps = dispatch => ({
+    next: () => dispatch(nextLayer()),
+    previous: () => dispatch(previousLayer()),
+    toStart: () => dispatch(setFirstLayer()),
+    downloadReport: () => dispatch(downloadReport())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizNavigation)

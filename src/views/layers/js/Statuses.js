@@ -11,12 +11,26 @@ const TITLE = 'Выберите статусы заявок',
       ADD_ALL = 'Добавить все',
       DELETE_ALL = 'Удалить все'
 
+const styled = {
+    warningSpan: {
+        display: 'block',
+        marginBottom: 5,
+        padding: 10,
+        backgroundColor: '#ffc600',
+        color: '#fff',
+        fontFamily: 'Roboto',
+        fontWeight: 500,
+        fontSize: 15,
+        textAlign: 'center'
+    }
+}
+
 const Statuses = props =>
     <div className={css.section}>
         <h3 className={css.title}>{TITLE}</h3>
         {
             props.selects.length === 0
-            ? <small className={css.textError}>{ErrorMessage}</small>
+            ? <span style={styled.warningSpan}>{ErrorMessage}</span>
             : null
         }
         <div className={css.content}>
@@ -56,12 +70,9 @@ const mapStateToProps = state => {
     return props
 }
 
-const mapDispatchToProps = dispatch => {
-    const props = {
-        addStatuses: value => dispatch(addStatusesToSelects(value)),
-        removeStatuses: value => dispatch(removeStatusesFromSelects(value))
-    }
-    return props
-}
+const mapDispatchToProps = dispatch => ({
+    addStatuses: value => dispatch(addStatusesToSelects(value)),
+    removeStatuses: value => dispatch(removeStatusesFromSelects(value))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Statuses)
