@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { navigationware, specificationware } from './redux/middlewares.js'
+import './index.css'
+import { navigationware, specificationware } from './redux/middlewares/middlewares.js'
 import reportWebVitals from './reportWebVitals'
-import rootReducer from './redux/rootReducer'
+import rootReducer from './redux/reducers/rootReducer.js'
 import { applyMiddleware, createStore } from 'redux'
 import App from './App'
 import {Provider} from 'react-redux'
 import reduxThunk from 'redux-thunk'
-import './index.css'
 
 
 export const store = createStore(

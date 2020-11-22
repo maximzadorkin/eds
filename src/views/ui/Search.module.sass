@@ -1,0 +1,63 @@
+@import 'Colors.module'
+.block
+  width: 90%
+  margin: auto
+
+.header
+  display: flex
+  align-items: center
+  padding: 5px
+  cursor: pointer
+  border: 1px solid transparent
+  border-radius: 5px
+  &:hover
+    border: 1px solid $light-gray
+
+.title
+  font-size: 25px
+  font-weight: 300
+  font-family: 'Roboto', sans-serif
+  cursor: pointer
+  white-space: nowrap
+  overflow: hidden
+
+.inputData
+  display: block
+  width: 100%
+  margin: 0 auto 0
+  padding: 5px 10px
+  border: 1px solid $light-gray
+  border-radius: 5px 5px 0px 0px
+  font-family: 'Roboto', sans-serif
+  font-size: 20px
+  font-weight: 100
+  outline: none
+
+.list
+  width: 100%
+  margin: 0
+  padding: 0
+  border: 1px solid $light-gray
+  border-radius: 0 0 5px 5px
+  background-color: $light
+  font-family: 'Roboto', sans-serif
+  font-size: 20px
+  font-weight: 100
+  outline: none
+
+.listItem
+  padding: 5px
+  border-bottom: 1px solid $light-gray
+  list-style: none
+  font-family: 'Roboto', sans-serif
+  font-size: 20px
+  font-weight: 100
+  outline: none
+
+@media(max-width: 568px)
+  .title
+    font-size: 20px
+  .inputData
+    font-size: 15px
+  .list, .listItem
+    font-size: 15px

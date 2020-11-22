@@ -1,0 +1,33 @@
+@import 'Colors.module'
+.list
+  padding: 15px
+  margin: 0
+  height: 100%
+  width: 320px
+  border: 1px solid $light-gray
+  border-radius: 10px
+  overflow: auto
+  user-select: none
+.item
+  list-style-type: none
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 5px
+  cursor: pointer
+  user-select: none
+  &:hover
+    background-color: $light-gray
+    color: $light
+.text
+  user-select: none
+  color: $dark
+  font-family: Roboto, sans-serif
+  font-size: 20px
+  font-weight: 100
+.icon
+  color: $dark
+  font-family: ElegantIcons !important
+  font-size: 20px
+  &:hover
+    color: $red

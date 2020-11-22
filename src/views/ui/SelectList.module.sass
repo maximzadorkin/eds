@@ -1,0 +1,30 @@
+@import 'Colors.module'
+.select
+  width: 320px
+  margin: 0
+  padding: 15px
+  height: 100%
+  border: 1px solid $light-gray
+  border-radius: 10px
+  font-family: Roboto, sans-serif
+  font-size: 20px
+  font-weight: 100
+  color: $dark
+  overflow: auto
+  user-select: none
+  & option
+    font-family: Roboto, sans-serif
+    font-size: 20px
+    font-weight: 100
+    user-select: none
+.item
+  padding: 5px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  list-style-type: none
+  cursor: pointer
+  color: $dark
+  user-select: none
+  &:hover
+    background-color: $light-gray
