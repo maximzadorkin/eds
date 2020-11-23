@@ -21,3 +21,18 @@ export const LOADING = 'LOADING'
 export const COMPANIES = 'Компании'
 export const ADDRESSES = 'Адреса'
 export const CLASSIFIERS = 'Классификаторы'
+export const mapCategoryToProperty = cat => {
+    const companies = 'Companies'
+    const addrs = 'Addresses'
+    const classifs = 'Classifiers'
+    switch (cat) {
+        case COMPANIES:
+            return companies
+        case ADDRESSES:
+            return addrs
+        case CLASSIFIERS:
+            return classifs
+        default:
+            return companies
+    }
+}

@@ -6,7 +6,6 @@ import {
     SET_REPORT_CHART_TYPE,
     SET_REPORT_VIEW
 } from '../actions/actionTypes.js'
-import db from '../../db.json'
 
 const initialState = {
     comp_table: [],
@@ -25,7 +24,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_REPORT:
             const comp_table = []
-            const orders_table = db.table.map(line =>
+            const orders_table = action.payload.map(line =>
                 Object.keys(line).sort().map(k => line[k]))
             const chart = []
             const layers = _.uniq(chart.map(g => ({name: g.ZLabel, checked: false})))

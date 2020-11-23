@@ -17,6 +17,7 @@ const Dates = props => {
                     className={sass.ListWithDeleteElements}
                     items={props.items}
                     deleteHandler={props.deleteRange}
+                    defaultValue='Выберите хотя бы 1 период'
                 />
             </div>
         </div>

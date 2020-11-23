@@ -22,6 +22,7 @@ const reducer = (state = initialState, action) => {
     let item
     switch (action.type) {
         case GET_LABELS_SPEC:
+            console.log(GET_LABELS_SPEC)
             const stateParts = state.parts.map(p => p.label)
             const isEqual = action.payload.join('') === stateParts.join('')
             parts = action.payload.map(p => ({label: p, item: ''}))

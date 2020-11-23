@@ -51,6 +51,7 @@ class ReportChart extends React.Component {
                 chart = (
                     <ReactApexChart
                         type="bar"
+                        stacked={true}
                         height={400}
                         width='100%'
                         options={this.state.options}
@@ -100,13 +101,14 @@ class ReportChart extends React.Component {
                         className={css.block}
                     />
                     <hr className={css.hr}/>
-                    <select size={3}
+                    <select size={1}
                             className={css.selectType}
                             value={this.props.activeType}
                             onChange={event => this.props.setType(event.target.selectedOptions[0].value)}
                     >
                         {types}
                     </select>
+                    <hr className={css.hr}/>
                 </div>
                 <div className={css.chart}>{chart}</div>
             </div>

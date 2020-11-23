@@ -14,7 +14,7 @@ export const specsLabelsLink = (type, cat) =>
     `/api/eds/?type=${type}&category=${cat}&method=2`
 export const specsLink = (cat, value) =>
     `/api/eds/specifications/?category=${cat}&spec=${value}`
-export const ReportStatistic = `/api/statistic/getappsbyfilter/?`
+export const ReportStatistic = `/api/eds/getappsbyfilter/?`
 export const ReportXlsLink = `/api/EDSChart/file.xlsx/?`
 
 

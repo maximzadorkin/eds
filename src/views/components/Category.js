@@ -4,6 +4,8 @@ import * as uniqid from 'uniqid'
 import { setCategory } from '../../redux/actions/actions.js'
 import css from './Category.module.sass'
 
+
+
 const Category = props =>
     <div className={css.section}>
         <span className={css.text}>Выбранная категория: {props.active}</span>
