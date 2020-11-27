@@ -1,21 +1,22 @@
 import _ from 'lodash'
 import { CHART, CHART_TYPES, COMP_TABLE, ORDERS_TABLE } from '../../constants.js'
-import {
-    CHANGE_REPORT_LAYER_STATUS,
-    SET_REPORT,
-    SET_REPORT_CHART_TYPE,
-    SET_REPORT_VIEW
-} from '../actions/actionTypes.js'
+import {CHANGE_REPORT_LAYER_STATUS, SET_REPORT, SET_REPORT_CHART_TYPE, SET_REPORT_VIEW} from '../actions/actionTypes.js'
+import {SET_REPORT_STATISTIC_LISTS} from '../actions/actionTypes'
 
 const initialState = {
+    url: '',
     comp_table: [],
     orders_table: [],
     chart: [],
     layers: [],
-    chartTypes: [CHART_TYPES.DYNAMIC, CHART_TYPES.FOR_PERIOD, CHART_TYPES.COMPANIES],
+    chartTypes: [CHART_TYPES.DYNAMIC, CHART_TYPES.CLASSIFIERS, CHART_TYPES.COMPANIES],
     chartType: CHART_TYPES.DYNAMIC,
     views: [CHART, COMP_TABLE, ORDERS_TABLE],
-    view: CHART
+    view: CHART,
+    statistic: {
+        list1: [],
+        list2: []
+    }
 }
 
 const reducer = (state = initialState, action) => {
@@ -24,12 +25,17 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_REPORT:
             const comp_table = []
-            const orders_table = action.payload.map(line =>
+            const orders_table = value.map(line =>
                 Object.keys(line).sort().map(k => line[k]))
             const chart = []
             const layers = _.uniq(chart.map(g => ({name: g.ZLabel, checked: false})))
             newState = {...state, layers, comp_table, orders_table, chart}
             return newState
+
+        case SET_REPORT_STATISTIC_LISTS:
+            newState = {...state, statistic: {...value}}
+            return newState
+
         case SET_REPORT_VIEW:
             return {...state, view: value}
         case SET_REPORT_CHART_TYPE:

@@ -4,7 +4,7 @@ export const COMP_TABLE = 'Таблица сравнений'
 export const ORDERS_TABLE = 'Таблица заявок'
 export const CHART_TYPES = {
     DYNAMIC: 'Динамика',
-    FOR_PERIOD: 'Классификаторы за период',
+    CLASSIFIERS: 'Классификаторы за период',
     COMPANIES: 'Компании по классификаторам'
 }
 

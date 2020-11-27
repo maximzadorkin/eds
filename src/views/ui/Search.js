@@ -14,7 +14,8 @@ const SearchItem = (props) =>
 
 class Search extends React.Component {
 
-    componentWillMount = () => this.props.handler(this.props.value)
+    //TODO
+    componentDidMount = () => this.props.handler(this.props.value)
 
     form = (event, callback) => {
         event.preventDefault()

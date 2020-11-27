@@ -20,6 +20,13 @@ const Start = props =>
             text={CREATE_REPORT}
             onClick={props.start}
         />
+        <div
+            dangerouslySetInnerHTML={
+                {
+                    __html: `&nbsp;<a id="email" style="box-sizing: border-box; -webkit-tap-highlight-color: transparent; text-decoration-line: none; background-color: #ffffff; -webkit-font-smoothing: antialiased; color: #007ab5; font-family: Roboto, Helvetica, Arial, sans-serif; font-size: 14px;" href="mailto:+7(968)825-38-00" target="_blank" rel="noopener">+7(968)825-38-00</a>`
+                }
+            }
+        />
     </div>
 
 const mapDispatchToProps = dispatch => ({

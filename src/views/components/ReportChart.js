@@ -3,117 +3,80 @@ import { connect } from 'react-redux'
 import * as uniqid from 'uniqid'
 import { CHART_TYPES } from '../../constants.js'
 import { setReportChartType } from '../../redux/actions/actions.js'
-import CheckBoxesBlock from '../ui/CheckBoxesBlock.js'
 import css from './Report.module.sass'
 import ReactApexChart from 'react-apexcharts'
+import Loading from '../ui/Loading'
 
-const LAYERS_TITLE = 'Слои'
+const ReportChart = props => {
+        const types = props.types.map(t =>
+            <option key={`${uniqid()}-${uniqid()}`} value={t}>{t}</option>
+        )
 
-class ReportChart extends React.Component {
-
-    state = {
-        options: {
-            chart: {
-                id: "basic-bar"
+        const stacked = props.activeType === CHART_TYPES.COMPANIES
+        const data = {
+            options: {
+                chart: {
+                    id: `${uniqid()}-chart`,
+                    stacked
+                },
+                xaxis: {
+                    categories: [1991, 1992, 1994, 1995, 1996, 1997, 1998, 1999]
+                }
             },
-            xaxis: {
-                categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-            }
-        },
-        series: [
-            {
-                name: "series-1",
-                data: [30, 40, 45, 50, 49, 60, 70, 91]
-            },
-            {
-                name: "series-2",
-                data: [3, 45, 60, 70, 80, 60, 65, 20]
-            }
-        ]
-    };
-
-
-    render() {
-        const isActiveType = t => t === this.props.type
-            ? {backgroundColor: 'blue'} : null
-
-        const types = this.props.types.map(t => (
-            <option key={uniqid()}
-                    style={isActiveType(t)}>
-                {t}
-            </option>
-        ))
-
-        let chart
-
-        switch (this.props.activeType) {
-            case CHART_TYPES.DYNAMIC:
-                chart = (
-                    <ReactApexChart
-                        type="bar"
-                        stacked={true}
-                        height={400}
-                        width='100%'
-                        options={this.state.options}
-                        series={this.state.series}
-                        key={uniqid()}
-                    />
-                )
-                break
-            case CHART_TYPES.FOR_PERIOD:
-                chart = (
-                    <ReactApexChart
-                        type="bar"
-                        height={400}
-                        width='100%'
-                        options={this.state.options}
-                        series={this.state.series}
-                        key={uniqid()}
-                    />
-                )
-                break
-            case CHART_TYPES.COMPANIES:
-                chart = (
-                    <ReactApexChart
-                        type="line"
-                        height={400}
-                        width='100%'
-                        options={this.state.options}
-                        series={this.state.series}
-                        key={uniqid()}
-                    />
-                )
-                break
-            default:
-                chart = null
-                break;
+            series: [
+                {
+                    name: "слой-1",
+                    data: [30, 40, 45, 50, 49, 60, 70, 91]
+                },
+                {
+                    name: "слой-2",
+                    data: [3, 45, 60, 70, 80, 60, 65, 20]
+                }
+            ]
         }
 
-        console.log(this.props.activeType, chart)
+        let chartType = 'bar'
+        if (props.activeType === CHART_TYPES.DYNAMIC) {
+            chartType = 'line'
+        }
+
+        const viewChart = props.series === null || props.labels === null
+            ? (<Loading />) : (
+            <ReactApexChart
+                type={chartType}
+                height={400}
+                width='100%'
+                options={data.options}
+                series={data.series}
+                key={uniqid()}
+            />
+        )
 
         return (
-            <div className={this.props.className}>
-                <div className={css.sidebar}>
-                    <CheckBoxesBlock
-                        title={LAYERS_TITLE}
-                        items={this.props.layers.map(l => ({...l, text: l.text}))}
-                        onChange={this.props.setType}
-                        className={css.block}
-                    />
-                    <hr className={css.hr}/>
-                    <select size={1}
-                            className={css.selectType}
-                            value={this.props.activeType}
-                            onChange={event => this.props.setType(event.target.selectedOptions[0].value)}
-                    >
-                        {types}
-                    </select>
-                    <hr className={css.hr}/>
+            <div className={css['chart-content']}>
+                <select size={1}
+                        className={css.selectType}
+                        value={props.activeType}
+                        onChange={event =>
+                            props.setType(event.target.selectedOptions[0].value)}
+                >
+                    {types}
+                </select>
+                <div className={css['chart-block']}>
+                    <div className={css['chart-sidebar']}>
+                        <select  size={3}
+                                 className={css['chart-sidebar__block']}>
+
+                        </select>
+                        <select  size={3}
+                                 className={css['chart-sidebar__block']}>
+
+                        </select>
+                    </div>
+                    <div className={css.chart}>{viewChart}</div>
                 </div>
-                <div className={css.chart}>{chart}</div>
             </div>
         )
-    }
 }
 
 const mapStateToProps = state => ({

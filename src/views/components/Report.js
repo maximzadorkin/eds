@@ -11,7 +11,7 @@ const Report = props => {
     let view
     switch (props.view) {
         case CHART:
-            view = <ReportGraph className={css.content}/>
+            view = <ReportGraph />
             break
         case COMP_TABLE:
             break

@@ -12,27 +12,37 @@
   font-size: 20px
   font-weight: 300
   outline: none
-.content
-  display: flex
+.chart
   width: 100%
-  height: 430px
-  overflow: auto
-  color: $dark
-  border: 1px solid $light-gray
-  border-radius: 0 0 5px 5px
-.sidebar
-  min-width: 230px
-  width: 30%
-  height: 100%
-  border-right: 1px solid $light-gray
-.block
-  height: 50%
+  &-content
+    width: 100%
+    border: 1px solid $light-gray
+    border-bottom: none
+  &-block
+    height: 430px
+    display: flex
+    color: $dark
+    border: 1px solid $light-gray
+    border-radius: 0 0 5px 5px
+  &-sidebar
+    display: flex
+    flex-direction: column
+    width: 320px
+    height: 100%
+    border-right: 1px solid $light-gray
+    &__block
+      border: none
+      border-bottom: 1px solid $light-gray
+      outline: none
+      height: 50%
 .hr
+  margin-top: 0
   border: none
   border-top: 1px solid $light-gray
 .checkBoxesBlock
   height: 100%
 .selectType
+  padding: 10px
   border: none
   width: 100%
   outline: none
@@ -52,18 +62,15 @@
   justify-content: center
   width: 100%
   overflow: auto
-.chart
-  width: 100%
 
 @media(max-width: 768px)
-  .content
+  .chart-block
     height: 100%
     flex-wrap: wrap
-  .sidebar
+  .chart-sidebar
     width: 100%
     border-right: none
     border-bottom: 1px solid $light-gray
   .block
     width: 100%
-
     color: $orange

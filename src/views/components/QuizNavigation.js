@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { downloadReport, nextLayer, previousLayer, setFirstLayer } from '../../redux/actions/actions.js'
+import { nextLayer, previousLayer, setFirstLayer } from '../../redux/actions/actions.js'
 import { REPORT } from '../../constants.js'
-import Button from '../ui/Button.js'
 import ButtonIcon from '../ui/ButtonIcon.js'
 import css from './QuizNavigation.module.sass'
 import colors from '../ui/Colors.module.sass'
@@ -17,11 +16,8 @@ const QuizNavigation = (props) =>
 
         </div>
         {
-            props.layer === REPORT ? (
-                <Button text={DOWNLOAD_TEXT}
-                    className={css.btn} onClick={props.downloadReport}
-                />
-            )
+            props.layer === REPORT
+            ? <a href={props.downloadReportUrl}>{DOWNLOAD_TEXT}</a>
             : <ButtonIcon
                 icon='&#x3d;'
                 style={{marginRight: 0}}
@@ -31,14 +27,14 @@ const QuizNavigation = (props) =>
     </div>
 
 const mapStateToProps = state => ({
-    layer: state.navigation.active
+    layer: state.navigation.active,
+    downloadReportUrl: state.report.url
 })
 
 const mapDispatchToProps = dispatch => ({
     next: () => dispatch(nextLayer()),
     previous: () => dispatch(previousLayer()),
-    toStart: () => dispatch(setFirstLayer()),
-    downloadReport: () => dispatch(downloadReport())
+    toStart: () => dispatch(setFirstLayer())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizNavigation)

@@ -1,14 +1,10 @@
-import {
-    NEXT_LAYER,
-    PREVIOUS_LAYER,
-    SET_FIRST_LAYER,
-    SET_VALUE_LAYER
-} from '../actions/actionTypes.js'
-import { CATEGORY, DATE_RANGES, REPORT, SPECIFICATION, START, STATUSES } from '../../constants.js'
+import {NEXT_LAYER, PREVIOUS_LAYER, SET_FIRST_LAYER, SET_VALUE_LAYER} from '../actions/actionTypes.js'
+import { DATE_RANGES, REPORT, START, STATUSES } from '../../constants.js'
+import {ADDRESSES, CLASSIFIERS, COMPANIES} from '../../constants'
 
 const initialState = {
     active: START,
-    layers: [START, STATUSES, CATEGORY, SPECIFICATION, DATE_RANGES, REPORT]
+    layers: [START, STATUSES, COMPANIES, CLASSIFIERS, ADDRESSES, DATE_RANGES, REPORT]
 }
 
 const reducer = (state = initialState, action) => {

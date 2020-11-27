@@ -1,21 +1,23 @@
-export const protocol = 'https'
-export const domain = 'dev.dcorpse.keenetic.pro'
-export const port = ''
+const protocol = 'https'
+const domain = 'dev.dcorpse.keenetic.pro'
+const port = ''
 
-export const getLink = () => {
+const getLink = () => {
     const link = `${protocol}://${domain}`
     return port ? `${link}:${port}` : link
 }
-export const typesLink = value =>
+
+const typesLink = value =>
     `/api/eds/?type=${value}`
-export const catsLink = (type, value) =>
-    `/api/eds/?type=${type}&category=${value}&method=1`
-export const specsLabelsLink = (type, cat) =>
+//export const catsLink = (type, value) =>
+  //  `/api/eds/?type=${type}&category=${value}&method=1`
+const specsLabelsLink = (type, cat) =>
     `/api/eds/?type=${type}&category=${cat}&method=2`
-export const specsLink = (cat, value) =>
+const specsLink = (cat, value) =>
     `/api/eds/specifications/?category=${cat}&spec=${value}`
-export const ReportStatistic = `/api/eds/getappsbyfilter/?`
-export const ReportXlsLink = `/api/EDSChart/file.xlsx/?`
+const ReportStatistic = (chart, a, b) => `/api/eds/getpoints/?chart=${chart}&a1=${a}&a2=${b}`
+const ReportXlsLink = `/api/EDSChart/file.xlsx/?`
+
 
 
 export const ApiTypes = value =>
@@ -24,5 +26,6 @@ export const ApiSpecsLabels = (cat) =>
     `${getLink()}${specsLabelsLink('', cat)}`
 export const ApiSpecs = (cat, value) =>
     `${getLink()}${specsLink(cat, value)}`
-export const ApiStatistic = `${getLink()}${ReportStatistic}`
+export const ApiStatistic = (chart = '', a = '', b = '') => `${getLink()}${ReportStatistic(chart, a, b)}`
 export const ApiReportXls = `${getLink()}${ReportXlsLink}`
+

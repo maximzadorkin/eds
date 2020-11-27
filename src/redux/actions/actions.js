@@ -1,17 +1,26 @@
 import {
     ADD_DATE_RANGE,
-    ADD_SPECIFICATION_ITEM, ADD_STATUSES_TO_SELECTS, CHANGE_REPORT_LAYER_STATUS,
-    DELETE_DATE_RANGE, DOWNLOAD_REPORT,
+    ADD_SPECIFICATION_ITEM,
+    ADD_STATUSES_TO_SELECTS,
+    CHANGE_REPORT_LAYER_STATUS,
+    DELETE_DATE_RANGE,
     GET_LABELS_SPEC,
     NEXT_LAYER,
     PREVIOUS_LAYER,
-    REMOVE_SPECIFICATION_ITEM, REMOVE_STATUSES_FROM_SELECTS,
-    SET_AND_SEARCH, SET_CATEGORY,
-    SET_FIRST_LAYER, SET_REPORT, SET_REPORT_CHART_TYPE, SET_REPORT_VIEW,
+    REMOVE_SPECIFICATION_ITEM,
+    REMOVE_STATUSES_FROM_SELECTS,
+    SET_AND_SEARCH,
+    SET_CATEGORY,
+    SET_FIRST_LAYER,
+    SET_REPORT,
+    SET_REPORT_CHART_TYPE,
+    SET_REPORT_VIEW,
     SET_SPECIFICATION_SEARCHES,
-    SET_SPECS_LABEL_ITEM, SET_STATUSES,
+    SET_SPECS_LABEL_ITEM,
+    SET_STATUSES,
     SET_VALUE_LAYER
 } from './actionTypes.js'
+import {SET_REPORT_STATISTIC_LISTS} from './actionTypes'
 
 export const addDateRange = ([{startDate, endDate}]) =>
     ({type: ADD_DATE_RANGE, payload: {startDate, endDate}})
@@ -36,7 +45,7 @@ export const removeStatusesFromSelects = payload => ({type: REMOVE_STATUSES_FROM
 export const setStatuses = payload => ({type: SET_STATUSES, payload})
 
 export const setReport = payload => ({type: SET_REPORT, payload})
+export const setReportStatisticLists = (list1, list2) => ({type: SET_REPORT_STATISTIC_LISTS, payload: {list1, list2}})
 export const setReportView = view => ({type: SET_REPORT_VIEW, payload: view})
 export const setReportChartType = chartType => ({type: SET_REPORT_CHART_TYPE, payload: chartType})
-export const downloadReport = () => ({type: DOWNLOAD_REPORT})
 export const changeReportLayerStatus = layer => ({type: CHANGE_REPORT_LAYER_STATUS, payload: layer})

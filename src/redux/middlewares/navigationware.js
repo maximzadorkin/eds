@@ -1,14 +1,9 @@
 import { ApiSpecsLabels, ApiStatistic, ApiTypes } from '../../Api.js'
-import { getLabelsSpec, setReport, setStatuses, setValueLayer } from '../actions/actions.js'
+import {getLabelsSpec, setReport,setReportStatisticLists, setStatuses, setValueLayer} from '../actions/actions.js'
 import { NEXT_LAYER } from '../actions/actionTypes.js'
-import {
-    CATEGORY,
-    DATE_RANGES,
-    LOADING, mapCategoryToProperty,
-    REPORT, SPECIFICATION,
-    START,
-    STATUSES
-} from '../../constants.js'
+import {CATEGORY, DATE_RANGES, LOADING, mapCategoryToProperty, REPORT, SPECIFICATION, START, STATUSES} from '../../constants.js'
+import {ApiReportXls} from '../../Api'
+
 
 const fromStartLayer = async (store, state) => {
     store.dispatch(setValueLayer(LOADING))
@@ -44,6 +39,7 @@ const toReportLayer = async (store, state) => {
 
     store.dispatch(setValueLayer(LOADING))
 
+    // скачиваем статистику
     const getCurrentNumFormat = (num, count) => {
         const length = count - String(num).length
         return length > 0
@@ -67,17 +63,28 @@ const toReportLayer = async (store, state) => {
             To: `${getCurrentDateFormat(dr.endDate)}`,
         }))
     }
-    const paramsRequest = {
+    let paramsRequest = {
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body: JSON.stringify(request)
     }
 
+    const rState = state.report
     let data = []
-    const response = await fetch(ApiStatistic, paramsRequest)
-    if (response.ok) data = await response.json()
-    else console.log('Cant download report. Error')
+    const activeChartIndex = rState.chartTypes.indexOf(rState.chartType)
+    // let response = await fetch(ApiStatistic(activeChartIndex + 1, 'ЖЕУ-2', 'все'), paramsRequest)
+    // if (response.ok) data = await response.json()
+    // else console.log('Cant download report. Error')
 
+    // получаем ссылку на скачивание
+    let linkForDownload = []
+    // paramsRequest = {method: 'POST', body: JSON.stringify(data)}
+    // let response = await fetch(ApiReportXls, paramsRequest)
+    // if (response.ok) linkForDownload = await response.json()
+    // else console.log('Cant download report link. Error')
+
+    // data.url = linkForDownload
+    store.dispatch(setReportStatisticLists(data))
     store.dispatch(setReport(data))
     store.dispatch(setValueLayer(REPORT))
 }
@@ -95,7 +102,7 @@ export const navigationware = store => next => action => {
 
     switch (layer) {
         case START:
-            fromStartLayer(store, state)
+            fromStartLayer(store, state).finally()
             break
         case STATUSES:
             const countOfSelect = state.statuses.selects.length
@@ -103,10 +110,10 @@ export const navigationware = store => next => action => {
             if (countOfSelect >= minSelects) next(action)
             break
         case CATEGORY:
-            fromCategory(store, state)
+            fromCategory(store, state).finally()
             break
         case DATE_RANGES:
-            toReportLayer(store, state)
+            toReportLayer(store, state).finally()
             break
         default:
             next(action)

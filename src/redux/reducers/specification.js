@@ -1,13 +1,11 @@
 import { ADDRESSES, CLASSIFIERS, COMPANIES } from '../../constants.js'
-import {
-    ADD_SPECIFICATION_ITEM,
-    GET_LABELS_SPEC, REMOVE_SPECIFICATION_ITEM, SET_CATEGORY, SET_SPECIFICATION_SEARCHES,
-    SET_SPECS_LABEL_ITEM
-} from '../actions/actionTypes.js'
-
+import {ADD_SPECIFICATION_ITEM, GET_LABELS_SPEC, REMOVE_SPECIFICATION_ITEM, SET_CATEGORY, SET_SPECIFICATION_SEARCHES, SET_SPECS_LABEL_ITEM} from '../actions/actionTypes.js'
 
 
 const initialState = {
+    companies: [],
+    classifiers: [],
+    addresses: [],
     category: COMPANIES,
     categories: [COMPANIES, ADDRESSES, CLASSIFIERS],
     parts: [{label: '', item: ''}],
@@ -22,7 +20,6 @@ const reducer = (state = initialState, action) => {
     let item
     switch (action.type) {
         case GET_LABELS_SPEC:
-            console.log(GET_LABELS_SPEC)
             const stateParts = state.parts.map(p => p.label)
             const isEqual = action.payload.join('') === stateParts.join('')
             parts = action.payload.map(p => ({label: p, item: ''}))
