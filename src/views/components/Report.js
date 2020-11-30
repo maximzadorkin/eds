@@ -14,6 +14,7 @@ const Report = props => {
             view = <ReportGraph />
             break
         case COMP_TABLE:
+            view = <Table width='100%' height={400} items={props.compare_table}/>
             break
         case ORDERS_TABLE:
             view = <Table width='100%' height={400} items={props.orders_table}/>
@@ -43,6 +44,7 @@ const Report = props => {
 
 const mapStateToProps = state => ({
     orders_table: state.report.orders_table,
+    compare_table: state.report.compare_table,
     views: state.report.views,
     view: state.report.view
 })

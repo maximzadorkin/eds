@@ -1,22 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as uniqid from 'uniqid'
-import {addSpecificationItem, removeSpecificationItem, setSpecsLabelItem} from '../../redux/actions/actions.js'
+import {
+    addCategoryItem,
+    removeCategoryItem,
+    searchCategories,
+    setCategorySubItem
+} from '../../redux/actions/actions.js'
 import ButtonIcon from '../ui/ButtonIcon.js'
 import ListWithDeleteElements from '../ui/ListWithDeleteElements.js'
 import Search from '../ui/Search.js'
-import css from './Specification.module.sass'
-import {ADDRESSES, CLASSIFIERS, COMPANIES} from '../../constants'
+import css from './Category.module.sass'
 
-class Specification extends Component {
+class Category extends Component {
 
     state = {
         searchActive: false,
-        itemActive: 0
+        itemActive: 0,
+        searchId: uniqid()
     }
 
     addItem = (value) => {
-        this.props.addItem(value)
+        this.props.addItem(value, this.props.layer)
+        const empty = ''
+        this.props.searchCategories(this.state.itemActive, empty)
         this.setState({searchActive: false})
     }
 
@@ -30,17 +37,19 @@ class Specification extends Component {
 
         const finder = (show, size = 5) => !show ? null
             : (<Search
-                title={this.props.parts[this.state.itemActive].label}
+                title={this.props.steps[this.state.itemActive].label}
                 handler={value =>
-                    this.props.setSpecsLabelItem(this.state.itemActive, value)}
-                value={this.props.parts[this.state.itemActive].item}
+                    this.props.setCategorySubItem(this.state.itemActive, value, this.props.layer)}
+                search={(value) => this.props.searchCategories(this.state.itemActive, value)}
+                value={this.props.steps[this.state.itemActive].item}
                 items={this.props.searches}
                 listSize={size}
                 close={this.close}
+                key={this.state.searchId}
             />)
 
         const labels = hidden => hidden ? null
-            : this.props.parts.map((l,i) =>
+            : this.props.steps.map((l,i) =>
                 <span className={css.link}
                       onClick={() => this.open(i)}
                       key={uniqid()} >
@@ -50,7 +59,7 @@ class Specification extends Component {
         const alwaysOpenSearch = this.props.alwaysOpenSearch
         let choiseBlock = [finder(this.state.searchActive), labels(this.state.searchActive)]
         if (alwaysOpenSearch) {
-            choiseBlock = [finder(true, 10)]
+            choiseBlock = [finder(true, 7)]
         }
 
         return (
@@ -69,7 +78,7 @@ class Specification extends Component {
                 </div>
                 <ListWithDeleteElements
                     items={this.props.items}
-                    deleteHandler={this.props.deleteItem}
+                    deleteHandler={(item) => this.props.deleteItem(item, this.props.layer)}
                     style={{height: '440px'}}
                 />
             </div>
@@ -79,29 +88,20 @@ class Specification extends Component {
 
 const mapStateToProps = state => {
     const layer = state.navigation.active
-    const specState = state.specification
-    let items
-    switch (layer) {
-        case COMPANIES:
-            items = specState.companies
-            break
-        case CLASSIFIERS:
-            items = specState.classifiers
-            break
-        case ADDRESSES:
-            items = specState.addresses
-    }
+    const category = state.categories[layer]
     return {
-        parts: state.specification.parts,
-        items: items.sort(),
-        searches: state.specification.searches
+        steps: category.steps,
+        items: category.items.sort(),
+        searches: state.categories.searches,
+        layer
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    addItem: value => dispatch(addSpecificationItem(value)),
-    deleteItem: value => dispatch(removeSpecificationItem(value)),
-    setSpecsLabelItem: (index, item) => dispatch(setSpecsLabelItem(index, item))
+    addItem: (value, layer) => dispatch(addCategoryItem(value, layer)),
+    deleteItem: (value, layer) => dispatch(removeCategoryItem(value, layer)),
+    setCategorySubItem: (indexStep, item, layer) => dispatch(setCategorySubItem(indexStep, item, layer)),
+    searchCategories: (stepIndex, searchedValue) => dispatch(searchCategories(stepIndex, searchedValue))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Specification)
+export default connect(mapStateToProps, mapDispatchToProps)(Category)

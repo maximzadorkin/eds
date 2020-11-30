@@ -14,19 +14,22 @@ const SearchItem = (props) =>
 
 class Search extends React.Component {
 
-    //TODO
-    componentDidMount = () => this.props.handler(this.props.value)
+    componentDidMount = () => this.props.search(this.props.value)
 
-    form = (event, callback) => {
+    form = (event) => {
         event.preventDefault()
-        callback()
+        this.props.close()
+    }
+
+    inputHandler = (event) => {
+        this.props.handler(event.target.value)
+        this.props.search(event.target.value)
     }
 
     render() {
         return (
             <form className={css.block}
-                onSubmit={(event) =>
-                    this.form(event, this.props.close)}>
+                onSubmit={this.form}>
 
                 <div className={css.header} onClick={this.props.close}>
                     {this.props.close ? <ButtonIcon icon='&#x42;' /> : null}
@@ -38,9 +41,8 @@ class Search extends React.Component {
                 <input
                     type="text"
                     className={css.inputData}
-                    value={this.props.value}
-                    onChange={(event) =>
-                        this.props.handler(event.target.value)}
+                    value={this.props.value ?? ''}
+                    onChange={this.inputHandler}
                     autoFocus={true}
                 />
 

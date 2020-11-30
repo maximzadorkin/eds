@@ -12,7 +12,7 @@ const Table = props => {
     }
 
     const getLine = items => items.map(i => (
-        <td className={sass.td} key={uniqid()}>{i}</td>
+        <td className={sass.td} key={uniqid()} dangerouslySetInnerHTML={{__html: i}}/>
     ))
 
     const lines = props.items.map(i => (

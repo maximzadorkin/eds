@@ -1,11 +1,49 @@
-import { ApiSpecsLabels, ApiStatistic, ApiTypes } from '../../Api.js'
-import {getLabelsSpec, setReport,setReportStatisticLists, setStatuses, setValueLayer} from '../actions/actions.js'
+import { ApiReport, ApiSpecsLabels, ApiStatistic, ApiTypes } from '../../Api.js'
+import {
+    setCategorySearches,
+    setReport,
+    setReportStatisticLists,
+    setStatuses,
+    setValueLayer
+} from '../actions/actions.js'
 import { NEXT_LAYER } from '../actions/actionTypes.js'
-import {CATEGORY, DATE_RANGES, LOADING, mapCategoryToProperty, REPORT, SPECIFICATION, START, STATUSES} from '../../constants.js'
+import { ADDRESSES, CLASSIFIERS, COMPANIES, DATE_RANGES, LOADING, REPORT, START, STATUSES} from '../../constants.js'
 import {ApiReportXls} from '../../Api'
 
+const downloadTable = async (state, requestBody) => {
+    let responseData
+    let request = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json;charset=utf-8'},
+        body: JSON.stringify(requestBody)
+    }
+    const response = await fetch(ApiReport(), request)
+    if (response.ok) responseData = await response.json()
+    else console.log('Cant download report. Error')
 
-const fromStartLayer = async (store, state) => {
+    return responseData
+}
+const downloadChartPoints = async state => {
+    let responseData
+    const rState = state.report
+    const activeChartIndex = rState.chartTypes
+        .map(c => c.name).indexOf(rState.chartType.name)
+    const response = await fetch(ApiStatistic(activeChartIndex + 1, 'ЖЕУ-2', 'все'))
+    if (response.ok) responseData = await response.json()
+    else console.log('Cant download report. Error')
+    return responseData
+}
+const downloadXlsLink = async (state, requestBody) => {
+    let linkForDownload = []
+    const paramsRequest = {method: 'POST', body: JSON.stringify(requestBody)}
+    // const response = await fetch(ApiReportXls, paramsRequest)
+    // const response = await fetch('https://dev.dcorpse.keenetic.pro/api/eds/test', paramsRequest)
+    // if (response.ok) linkForDownload = await response.json()
+    // else console.log('Cant download report link. Error')
+    // return 'https://dev.dcorpse.keenetic.pro/api/eds/test'
+}
+
+const fromStartLayer = async (store) => {
     store.dispatch(setValueLayer(LOADING))
 
     let statuses = []
@@ -15,18 +53,6 @@ const fromStartLayer = async (store, state) => {
 
     store.dispatch(setStatuses(statuses))
     store.dispatch(setValueLayer(STATUSES))
-}
-
-const fromCategory = async (store, state) => {
-    store.dispatch(setValueLayer(LOADING))
-
-    let labels = []
-    const response = await fetch(ApiSpecsLabels(state.specification.category), {method: 'GET'})
-    if (response.ok) labels = await response.json()
-    else console.log('Cant download labels. Error')
-
-    store.dispatch(getLabelsSpec(labels))
-    store.dispatch(setValueLayer(SPECIFICATION))
 }
 
 const toReportLayer = async (store, state) => {
@@ -39,49 +65,37 @@ const toReportLayer = async (store, state) => {
 
     store.dispatch(setValueLayer(LOADING))
 
-    // скачиваем статистику
-    const getCurrentNumFormat = (num, count) => {
-        const length = count - String(num).length
-        return length > 0
-            ? '0'.repeat(length) + num
-            : num
-    }
-    const getCurrentDateFormat = (date) =>
-        `${getCurrentNumFormat(date.getFullYear(), 4)}-` +
-        `${getCurrentNumFormat(date.getMonth() + 1, 2)}-` +
-        `${getCurrentNumFormat(date.getDate(), 2)}`
-
-    const specs = {
-        name: mapCategoryToProperty(state.specification.category),
-        data: state.specification.items
-    }
-    const request = {
+    const requestBody = {
         Statuses: state.statuses.selects,
-        [specs.name]: specs.data,
+        Companies: state.categories[COMPANIES].items,
+        Classifiers: state.categories[CLASSIFIERS].items,
+        Addresses: state.categories[ADDRESSES].items,
         Periods: state.dateRanges.map(dr => ({
-            From: `${getCurrentDateFormat(dr.startDate)}`,
-            To: `${getCurrentDateFormat(dr.endDate)}`,
+            From: `${dr.startDate.toLocaleDateString().split('.').reverse().join('-')}`,
+            To: `${dr.endDate.toLocaleDateString().split('.').reverse().join('-')}`,
         }))
     }
-    let paramsRequest = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json;charset=utf-8'},
-        body: JSON.stringify(request)
+    console.log(requestBody)
+
+    // download table
+    const table = await downloadTable(state, requestBody)
+
+    // console.log(table)
+    // download chart points
+    // const points = await downloadChartPoints(state, )
+    // console.log(points)
+    // download url for xls
+    // const xlsLink = await downloadXlsLink(state, requestBody)
+    // console.log(xlsLink)
+
+    let data = {
+        statistic: {
+            list1: state.categories[COMPANIES].items,
+            list2: state.categories[CLASSIFIERS].items
+        },
+        table,
+        // url: xlsLink
     }
-
-    const rState = state.report
-    let data = []
-    const activeChartIndex = rState.chartTypes.indexOf(rState.chartType)
-    // let response = await fetch(ApiStatistic(activeChartIndex + 1, 'ЖЕУ-2', 'все'), paramsRequest)
-    // if (response.ok) data = await response.json()
-    // else console.log('Cant download report. Error')
-
-    // получаем ссылку на скачивание
-    let linkForDownload = []
-    // paramsRequest = {method: 'POST', body: JSON.stringify(data)}
-    // let response = await fetch(ApiReportXls, paramsRequest)
-    // if (response.ok) linkForDownload = await response.json()
-    // else console.log('Cant download report link. Error')
 
     // data.url = linkForDownload
     store.dispatch(setReportStatisticLists(data))
@@ -100,17 +114,16 @@ export const navigationware = store => next => action => {
         return
     }
 
+    store.dispatch(setCategorySearches([]))
+
     switch (layer) {
         case START:
-            fromStartLayer(store, state).finally()
+            fromStartLayer(store).finally()
             break
         case STATUSES:
             const countOfSelect = state.statuses.selects.length
             const minSelects = 1
             if (countOfSelect >= minSelects) next(action)
-            break
-        case CATEGORY:
-            fromCategory(store, state).finally()
             break
         case DATE_RANGES:
             toReportLayer(store, state).finally()

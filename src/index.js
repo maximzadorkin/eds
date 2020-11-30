@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { navigationware } from './redux/middlewares/navigationware.js'
-import { specificationware } from './redux/middlewares/specificationware.js'
 import reportWebVitals from './reportWebVitals'
 import rootReducer from './redux/reducers/rootReducer.js'
 import { applyMiddleware, createStore } from 'redux'
@@ -15,7 +14,6 @@ export const store = createStore(
     rootReducer,
     applyMiddleware(
         navigationware,
-        specificationware,
         reduxThunk
     )
 )

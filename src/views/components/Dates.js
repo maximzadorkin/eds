@@ -29,10 +29,8 @@ const mapStateToProps = state => {
     const datesToString = date => {
         const start = new Date(date.startDate)
         const end = new Date(date.endDate)
-        const startLine =
-            `${start.getDate()}.${start.getMonth() + 1}.${start.getFullYear()}`
-        const endLine =
-            `${end.getDate()}.${end.getMonth() + 1}.${end.getFullYear()}`
+        const startLine = start.toLocaleDateString()
+        const endLine = end.toLocaleDateString()
         return `${startLine} - ${endLine}`
     }
     const props = {items: state.dateRanges.map(datesToString)}

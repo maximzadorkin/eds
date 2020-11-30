@@ -1,13 +1,14 @@
 import React from 'react'
 import '../../fonts/fontIcons.css'
 import { connect } from 'react-redux'
+import * as uniqid from 'uniqid'
 import {ADDRESSES, CLASSIFIERS, COMPANIES, DATE_RANGES, LOADING, REPORT, START, STATUSES} from '../../constants.js'
+import Category from '../components/Category.js'
 import Loading from '../ui/Loading.js'
 import css from './QuizWrapper.module.sass'
 import Dates from '../components/Dates.js'
 import QuizNavigation from '../components/QuizNavigation.js'
 import Report from '../components/Report.js'
-import Specification from '../components/Specification.js'
 import Start from '../components/Start.js'
 import Statuses from '../components/Statuses.js'
 
@@ -26,13 +27,13 @@ const QuizWrapper = props => {
             layer = <Statuses />
             break
         case COMPANIES:
-            layer = <Specification name={COMPANIES} alwaysOpenSearch={true} />
+            layer = <Category key={uniqid()} alwaysOpenSearch={true} />
             break
         case CLASSIFIERS:
-            layer = <Specification name={CLASSIFIERS} alwaysOpenSearch={true}/>
+            layer = <Category key={uniqid()} alwaysOpenSearch={true}/>
             break
         case ADDRESSES:
-            layer = <Specification name={ADDRESSES} alwaysOpenSearch={false}/>
+            layer = <Category key={uniqid()} alwaysOpenSearch={false}/>
             break
         case DATE_RANGES:
             layer = <Dates />

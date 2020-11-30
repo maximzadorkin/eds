@@ -11,15 +11,17 @@ const DOWNLOAD_TEXT = 'Скачать отчет'
 const QuizNavigation = (props) =>
     <div className={css.block}>
         <div>
-            <ButtonIcon icon='&#x40;' className={colors['red-color']} onClick={props.toStart}/>
-            <ButtonIcon icon='&#x3c;' onClick={props.previous}/>
+            <ButtonIcon icon='&#xe049;' className={colors['red-color']} onClick={props.toStart}/>
+            <ButtonIcon icon='&#xe04d;' onClick={props.previous}/>
 
         </div>
         {
             props.layer === REPORT
-            ? <a href={props.downloadReportUrl}>{DOWNLOAD_TEXT}</a>
+            ? <a href={props.downloadReportUrl} onClick={() => {
+                //window.open('https://dev.dcorpse.keenetic.pro/api/eds/test', '_blank')
+                }} className={css.btn}>{DOWNLOAD_TEXT}</a>
             : <ButtonIcon
-                icon='&#x3d;'
+                icon='&#xe04e;'
                 style={{marginRight: 0}}
                 onClick={() => props.next(props.canNext)}
               />
