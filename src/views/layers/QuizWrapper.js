@@ -11,6 +11,8 @@ import QuizNavigation from '../components/QuizNavigation.js'
 import Report from '../components/Report.js'
 import Start from '../components/Start.js'
 import Statuses from '../components/Statuses.js'
+import {ERROR} from '../../constants'
+import ErrorMessage from '../components/ErrorMessage'
 
 const QuizWrapper = props => {
 
@@ -43,6 +45,9 @@ const QuizWrapper = props => {
             break
         case LOADING:
             layer = <Loading />
+            break
+        case ERROR:
+            layer = <ErrorMessage />
             break
         default:
             layer = null

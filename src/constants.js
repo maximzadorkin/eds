@@ -23,6 +23,7 @@ export const STATUSES = 'STATUSES'
 export const DATE_RANGES = 'DATE_RANGES'
 export const REPORT = 'REPORT'
 export const LOADING = 'LOADING'
+export const ERROR = 'ERROR'
 
 // categories
 export const COMPANIES = 'Компании'

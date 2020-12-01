@@ -9,18 +9,18 @@ const getLink = () => {
 
 const typesLink = value =>
     `/api/eds/?type=${value}`
-const specsLink = (cat, value) =>
+const catsSearchesLink = (cat, value) =>
     `/api/eds/specifications/?category=${cat}&spec=${value}`
 const ReportStatistic = (chart, a, b) => `/api/eds/getpoints/?chart=${chart}&a1=${a}&a2=${b}`
-const ReportXlsLink = `/api/eds/test`
 
 
 
 export const ApiTypes = value =>
     `${getLink()}${typesLink(value)}`
-export const ApiSpecs = (cat, value) =>
-    `${getLink()}${specsLink(cat, value)}`
+export const ApiCatsSearch = (cat, value) =>
+    `${getLink()}${catsSearchesLink(cat, value)}`
 export const ApiReport = () =>`${getLink()}/api/eds/getappsbyfilter/?`
 export const ApiStatistic = (chart = 'dynamic', a = '', b = '') => `${getLink()}${ReportStatistic(chart, a, b)}`
-export const ApiReportXls = `${getLink()}${ReportXlsLink}`
+export const ApiReportXls = (name) => `${getLink()}/api/eds/download/${name}.xlsx`
+// export const ApiReportXls = (name) => `${getLink()}/api/eds/test.xlsx`
 

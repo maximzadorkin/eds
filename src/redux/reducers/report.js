@@ -4,7 +4,11 @@ import {CHANGE_REPORT_LAYER_STATUS, SET_REPORT, SET_REPORT_CHART_TYPE, SET_REPOR
 import {SET_REPORT_STATISTIC_LISTS} from '../actions/actionTypes'
 
 const initialState = {
-    url: '',
+    file: {
+        blob: {},
+        url: '',
+        name: ''
+    },
     compare_table: [],
     orders_table: [],
     chart: [],
@@ -54,7 +58,7 @@ const reducer = (state = initialState, action) => {
                 return keys.map(k => line[k])
             })
             const compare_table = getCompareTable(action.payload.table)
-            newState = {...value, orders_table, compare_table}
+            newState = {...value, orders_table, compare_table, file: action.payload.file}
             return {...state, ...newState}
 
         case SET_REPORT_STATISTIC_LISTS:

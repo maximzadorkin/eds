@@ -7,6 +7,7 @@ import {
     SET_REPORT_CHART_TYPE, SET_REPORT_VIEW, SET_STATUSES, SET_VALUE_LAYER
 } from './actionTypes.js'
 import {SET_REPORT_STATISTIC_LISTS} from './actionTypes'
+import {ApiCatsSearch} from '../../Api'
 
 
 export const addDateRange = ([{startDate, endDate}]) =>
@@ -36,7 +37,7 @@ export const searchCategories = (stepIndex, value) => {
         const items = state.categories[category].steps.map(p => p.item)
         const searchedValue =
             [...items.splice(0, stepIndex), value].join('-')
-        const response = await fetch(ApiSpecs(category, searchedValue), {method: 'GET'})
+        const response = await fetch(ApiCatsSearch(category, searchedValue), {method: 'GET'})
         let searches = []
         if (response.ok) searches = await response.json()
         else console.log('Cant download labels. Error')

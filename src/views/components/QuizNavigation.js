@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { nextLayer, previousLayer, setFirstLayer } from '../../redux/actions/actions.js'
-import { REPORT } from '../../constants.js'
+import {ERROR, REPORT} from '../../constants.js'
 import ButtonIcon from '../ui/ButtonIcon.js'
 import css from './QuizNavigation.module.sass'
 import colors from '../ui/Colors.module.sass'
@@ -17,20 +17,24 @@ const QuizNavigation = (props) =>
         </div>
         {
             props.layer === REPORT
-            ? <a href={props.downloadReportUrl} onClick={() => {
-                //window.open('https://dev.dcorpse.keenetic.pro/api/eds/test', '_blank')
-                }} className={css.btn}>{DOWNLOAD_TEXT}</a>
-            : <ButtonIcon
+            ? (<a download={props.downloadReportName} target='_blank'
+                  href={props.downloadReportUrl}
+                  className={css.btn}>
+                    {DOWNLOAD_TEXT}
+               </a>)
+            : props.layer === ERROR
+            ? null : (<ButtonIcon
                 icon='&#xe04e;'
                 style={{marginRight: 0}}
                 onClick={() => props.next(props.canNext)}
-              />
+              />)
         }
     </div>
 
 const mapStateToProps = state => ({
     layer: state.navigation.active,
-    downloadReportUrl: state.report.url
+    downloadReportUrl: state.report.file.url,
+    downloadReportName: state.report.file.name
 })
 
 const mapDispatchToProps = dispatch => ({
