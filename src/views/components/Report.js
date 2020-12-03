@@ -14,10 +14,10 @@ const Report = props => {
             view = <ReportGraph />
             break
         case COMP_TABLE:
-            view = <Table width='100%' height={400} items={props.compare_table}/>
+            view = <Table width='100%' items={props.compare_table}/>
             break
         case ORDERS_TABLE:
-            view = <Table width='100%' height={400} items={props.orders_table}/>
+            view = <Table width='100%' items={props.orders_table}/>
             break
         default:
             break
@@ -28,7 +28,7 @@ const Report = props => {
     ))
 
     return (
-        <div>
+        <div className={css.section}>
             <select
                 value={props.view}
                 className={css.select}

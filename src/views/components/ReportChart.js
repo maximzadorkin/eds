@@ -68,10 +68,6 @@ const ReportChart = props => {
                 list2 = props.statuses
                 break
         }
-        // console.log(props.dateRanges)
-        // console.log(props.statuses)
-        // console.log(list1)
-        // console.log(list2)
 
         return (
             <div className={css['chart-content']}>
@@ -108,7 +104,7 @@ const mapStateToProps = state => ({
     activeType: state.report.chartType,
     categories: state.categories,
     statuses: state.statuses.selects,
-    dateRanges: state.dateRanges.map(r => `${r.startDate} - ${r.endDate}`)
+    dateRanges: state.dateRanges.map(r => `${r.startDate.toLocaleDateString()} - ${r.endDate.toLocaleDateString()}`)
 })
 
 const mapDispatchToProps = dispatch => ({

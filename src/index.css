@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   font-family: Roboto, sans-serif;
+  transition: all .2s;
 }
 body {
   margin: 0;

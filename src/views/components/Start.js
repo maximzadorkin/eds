@@ -7,10 +7,16 @@ const CREATE_REPORT = 'Создать отчет'
 
 const styled = {
     div: {
-        height: 550,
+        height: '100%',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    btn: {
+        width: 250,
+        position: 'absolute',
+        top: 'calc(50% - 30px)',
+        left: 'calc(50% - 125px)'
     }
 }
 
@@ -19,6 +25,7 @@ const Start = props =>
         <Button
             text={CREATE_REPORT}
             onClick={props.start}
+            style={styled.btn}
         />
     </div>
 

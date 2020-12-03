@@ -10,10 +10,10 @@ const DOWNLOAD_TEXT = 'Скачать отчет'
 
 const QuizNavigation = (props) =>
     <div className={css.block}>
-        <div>
-            <ButtonIcon icon='&#xe049;' className={colors['red-color']} onClick={props.toStart}/>
-            <ButtonIcon icon='&#xe04d;' onClick={props.previous}/>
-
+        <div className={css.leftGroupBtn}>
+            <ButtonIcon icon='&#x38;' className={`${css.btnIcon} ${colors['red-color']}`} onClick={props.toStart}/>
+            <ButtonIcon icon='&#x34;' className={css.btnIcon} onClick={props.previous}/>
+            {props.extraBtn}
         </div>
         {
             props.layer === REPORT

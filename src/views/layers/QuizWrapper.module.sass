@@ -1,5 +1,6 @@
 @import '../ui/Colors.module'
 .wrapper
+  position: relative
   width: 95%
   max-width: 1024px
   height: 650px
@@ -8,13 +9,35 @@
   background-color: $light-wrap
   border-radius: 5px
   box-shadow: 1px 1px 5px 2px rgba(0,0,0,.1), -1px -1px 5px 5px rgb(255,255,255)
+  &-full_screen
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    min-height: 100% !important
+    padding: 10px
+    background-color: $light-wrap
 .container
   width: 95%
-  height: 100%
   margin: auto
+  min-height: 100%
+  &-full_screen
+.full_screen_btn
+  display: inline-block
+  font-family: ElegantIcons
+  font-size: 25px
+  background-color: transparent
+  color: $dark
+  border: none
+  border-radius: 25px
+  cursor: pointer
+  outline: none
+  transition: all .2s
+  &:hover
+    transform: scale(1.2)
 
 @media (max-width: 768px)
   .wrapper
-    height: auto
+    height: 700px
     min-height: 100%
     width: 100%

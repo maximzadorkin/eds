@@ -14,53 +14,68 @@ import Statuses from '../components/Statuses.js'
 import {ERROR} from '../../constants'
 import ErrorMessage from '../components/ErrorMessage'
 
-const QuizWrapper = props => {
 
-    const navigation = props.layer === START || props.layer === LOADING
-        ? null
-        : <QuizNavigation />
-
-    let layer
-    switch (props.layer) {
-        case START:
-            layer = <Start />
-            break
-        case STATUSES:
-            layer = <Statuses />
-            break
-        case COMPANIES:
-            layer = <Category key={uniqid()} alwaysOpenSearch={true} />
-            break
-        case CLASSIFIERS:
-            layer = <Category key={uniqid()} alwaysOpenSearch={true}/>
-            break
-        case ADDRESSES:
-            layer = <Category key={uniqid()} alwaysOpenSearch={false}/>
-            break
-        case DATE_RANGES:
-            layer = <Dates />
-            break
-        case REPORT:
-            layer = <Report />
-            break
-        case LOADING:
-            layer = <Loading />
-            break
-        case ERROR:
-            layer = <ErrorMessage />
-            break
-        default:
-            layer = null
+class QuizWrapper extends React.Component {
+    state = {
+        fullScreen: false
     }
+    render() {
+        const fullScreenBtn = (
+            <button onClick={() =>
+                this.setState({fullScreen: !this.state.fullScreen})}
+                className={css.full_screen_btn}
+                key={uniqid()}
+                dangerouslySetInnerHTML={{__html: this.state.fullScreen ? '&#xe041;' : '&#xe042;'}}
+            >
+            </button>
+        )
 
-    return (
-        <div className={css.wrapper}>
-            <div className={css.container}>
-                {navigation}
-                {layer}
+        const navigation = this.props.layer === START || this.props.layer === LOADING
+            ? fullScreenBtn
+            : <QuizNavigation extraBtn={[fullScreenBtn]}/>
+
+        let layer
+        switch (this.props.layer) {
+            case START:
+                layer = <Start />
+                break
+            case STATUSES:
+                layer = <Statuses />
+                break
+            case COMPANIES:
+                layer = <Category key={uniqid()} alwaysOpenSearch={true} />
+                break
+            case CLASSIFIERS:
+                layer = <Category key={uniqid()} alwaysOpenSearch={true}/>
+                break
+            case ADDRESSES:
+                layer = <Category key={uniqid()} alwaysOpenSearch={false}/>
+                break
+            case DATE_RANGES:
+                layer = <Dates />
+                break
+            case REPORT:
+                layer = <Report />
+                break
+            case LOADING:
+                layer = <Loading />
+                break
+            case ERROR:
+                layer = <ErrorMessage />
+                break
+            default:
+                layer = null
+        }
+
+        return (
+            <div className={this.state.fullScreen ? css['wrapper-full_screen'] : css.wrapper}>
+                {/*<div className={css.container}>*/}
+                    {navigation}
+                    {layer}
+                {/*</div>*/}
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 const mapStateToProps = state => ({
